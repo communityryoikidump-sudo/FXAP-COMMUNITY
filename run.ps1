@@ -55,9 +55,17 @@ Write-Host "[..] Criando estrutura de pastas..." -ForegroundColor Cyan
 New-Item -ItemType Directory -Path "$DEST\Input"  -Force | Out-Null
 New-Item -ItemType Directory -Path "$DEST\Output" -Force | Out-Null
 
-# 4. Baixar main.py
+# 4. Baixar main.py e runtime do pyarmor
 Write-Host "[..] Baixando programa..." -ForegroundColor Cyan
 Invoke-WebRequest -Uri "$REPO/main.py" -OutFile "$DEST\main.py"
+
+# Runtime do pyarmor
+$RUNTIME = "$DEST\pyarmor_runtime_000000"
+New-Item -ItemType Directory -Path "$RUNTIME" -Force | Out-Null
+New-Item -ItemType Directory -Path "$RUNTIME\__pycache__" -Force | Out-Null
+Invoke-WebRequest -Uri "$REPO/pyarmor_runtime_000000/__init__.py" -OutFile "$RUNTIME\__init__.py"
+Invoke-WebRequest -Uri "$REPO/pyarmor_runtime_000000/pyarmor_runtime.pyd" -OutFile "$RUNTIME\pyarmor_runtime.pyd"
+Invoke-WebRequest -Uri "$REPO/pyarmor_runtime_000000/__pycache__/__init__.cpython-312.pyc" -OutFile "$RUNTIME\__pycache__\__init__.cpython-312.pyc"
 Write-Host "[OK] Programa baixado!" -ForegroundColor Green
 
 # 5. Criar atalho rodar.bat
